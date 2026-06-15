@@ -63,6 +63,35 @@
   .nav-cta:hover { background: var(--orange-light) !important; transform: translateY(-1px); }
   .nav-cta::after { display: none !important; }
 
+  /* ── NAVBAR DROPDOWN ── */
+  .nav-dropdown { position: relative; display: inline-block; }
+  .nav-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 210px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    z-index: 999;
+    padding: 8px 0;
+    overflow: hidden;
+  }
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown.open .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu a {
+    display: block;
+    padding: 9px 18px;
+    color: #094e58;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .nav-dropdown-menu a:hover { background: #f0fafa; }
+  .dropdown-arrow { font-size: 11px; margin-left: 3px; opacity: 0.7; }
+
   @keyframes fadeInUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 
   /* ── SECTION BASE ── */
@@ -93,27 +122,39 @@
   .fc-tags { display:flex; flex-wrap:wrap; gap:8px; }
   .fc-tag { font-size:12px; font-weight:700; padding:4px 12px; border-radius:20px; background:var(--cream); color:var(--teal); border:1px solid var(--cream-dark); }
 
-  /* ── UPLOAD ── */
-  .upload-section { padding:100px 0; background:var(--teal-dark); }
-  .upload-layout { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
-  .upload-zone { border:2.5px dashed rgba(255,255,255,.25); border-radius:var(--radius); padding:48px 32px; text-align:center; background:rgba(255,255,255,.06); transition:var(--transition); cursor:pointer; position:relative; overflow:hidden; margin-top:32px; }
-  .upload-zone:hover { border-color:rgba(255,255,255,.5); transform:translateY(-2px); box-shadow:var(--shadow-sm); }
-  .upload-zone.drag-over { border-color:var(--orange); background:rgba(232,130,30,.08); transform:scale(1.01); }
-  .upload-icon { font-size:48px; margin-bottom:16px; }
-  .upload-zone h3 { font-family:'Playfair Display',serif; font-size:20px; color:var(--white); margin-bottom:8px; }
-  .upload-zone p { font-size:14px; color:rgba(255,255,255,.6); margin-bottom:20px; }
-  .upload-types { display:flex; justify-content:center; gap:12px; }
-  .upload-type { display:flex; align-items:center; gap:6px; font-size:13px; font-weight:700; padding:6px 14px; border-radius:20px; cursor:pointer; transition:var(--transition); }
-  .upload-type.excel { background:rgba(39,184,128,.18); color:var(--green-light); border:1px solid rgba(39,184,128,.3); }
-  .upload-type.pdf   { background:rgba(232,130,30,.18); color:var(--orange-light); border:1px solid rgba(232,130,30,.3); }
-  .upload-type:hover { transform:translateY(-1px); box-shadow:var(--shadow-sm); }
-  .upload-features { display:flex; flex-direction:column; gap:24px; }
-  .uf-item { display:flex; gap:20px; align-items:flex-start; padding:24px; border-radius:var(--radius); border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.06); transition:var(--transition); }
-  .uf-item:hover { border-color:rgba(255,255,255,.22); box-shadow:var(--shadow-sm); }
-  .uf-num { width:40px; height:40px; border-radius:10px; background:var(--teal-light); color:var(--white); font-family:'Space Mono',monospace; font-size:16px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .uf-num.orange{background:var(--orange)} .uf-num.green{background:var(--green)}
-  .uf-content h4 { font-size:16px; font-weight:700; color:var(--white); margin-bottom:4px; }
-  .uf-content p { font-size:13px; color:rgba(255,255,255,.6); line-height:1.6; }
+  /* badge casemix di search */
+  .badge-casemix {
+    background: var(--teal, #1a7f8f);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .casemix-result { cursor: pointer; }
+  .sri-body { flex: 1; }
+
+  /* ── FILE BADGE (search results) ── */
+  .file-badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 700;
+    margin-right: 6px;
+  }
+  .badge-excel { background: rgba(46,125,50,.25); color: #81c784; }
+  .badge-pdf   { background: rgba(198,40,40,.25);  color: #ef9a9a; }
+  .badge-pptx  { background: rgba(230,81,0,.25);   color: #ffb74d; }
+  .badge-img   { background: rgba(21,101,192,.25);  color: #90caf9; }
+  .si-section  { font-size: 12px; color: rgba(255,255,255,.4); }
+
+  .search-empty {
+    text-align: center;
+    color: rgba(255,255,255,.4);
+    padding: 20px 0;
+    font-size: 13px;
+  }
 
   /* ── SEARCH DEMO ── */
   .search-section { padding:100px 0; background:linear-gradient(135deg,var(--teal-dark) 0%,var(--dark-2) 100%); overflow:hidden; }
@@ -131,15 +172,54 @@
   .sdb-filter { font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px; background:rgba(255,255,255,.08); color:rgba(255,255,255,.6); border:1px solid rgba(255,255,255,.1); cursor:pointer; transition:var(--transition); }
   .sdb-filter.active,.sdb-filter:hover { background:var(--teal); color:var(--white); border-color:var(--teal); }
   .sdb-results { padding:12px 20px 20px; }
-  .sdb-result-item { display:flex; align-items:center; gap:12px; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,.06); margin-bottom:8px; background:rgba(255,255,255,.03); transition:var(--transition); }
-  .sdb-result-item:hover { background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.12); }
+
+  /* ── SEARCH RESULT ITEM — semua states dalam satu blok ── */
+  .sdb-result-item {
+    display:flex; align-items:center; gap:12px; padding:12px;
+    border-radius:10px; border:1px solid rgba(255,255,255,.06);
+    margin-bottom:8px; background:rgba(255,255,255,.03);
+    transition:var(--transition);
+    /* warna teks eksplisit — tidak inherit dari parent gelap */
+    color: rgba(255,255,255,.85);
+    cursor: pointer;
+  }
+  .sdb-result-item:hover {
+    background:rgba(255,255,255,.10);
+    border-color:rgba(255,255,255,.18);
+    /* TIDAK ada color di sini — biarkan child rules yang handle */
+  }
   .sri-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
   .sri-icon.excel{background:rgba(31,144,104,.25)} .sri-icon.pdf{background:rgba(232,130,30,.25)}
   .sri-info { flex:1; }
+
+  /* nama dokumen — eksplisit di semua state */
   .sri-name { font-size:13px; font-weight:700; color:rgba(255,255,255,.85); }
-  .sri-meta { font-size:11px; color:rgba(255,255,255,.4); margin-top:2px; }
+  .sdb-result-item:hover .sri-name { color: var(--white); }
+
+  /* meta/subtitle — eksplisit di semua state */
+  .sri-meta { font-size:11px; color:rgba(255,255,255,.45); margin-top:2px; }
+  .sdb-result-item:hover .sri-meta { color:rgba(255,255,255,.65); }
   .sri-meta .highlight { color:var(--orange-light); }
-  .sri-badge { font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px; background:rgba(31,144,104,.2); color:var(--green-light); }
+
+  /* badge kanan — tipe dokumen */
+  .sri-badge {
+    font-size:10px; font-weight:700; padding:3px 8px;
+    border-radius:20px; background:rgba(31,144,104,.2);
+    color:var(--green-light);
+    white-space: nowrap; flex-shrink: 0;
+  }
+  /* override badge untuk casemix result — lebih spesifik */
+  .casemix-result .sri-badge {
+    font-size: 11px; padding: 2px 8px;
+    background: var(--teal-dark, #094e58);
+    color: #fff; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.18);
+  }
+  .sdb-result-item:hover .sri-badge { opacity: 1; }
+  .sdb-result-item:hover.casemix-result .sri-badge {
+    background: rgba(9,78,88,.9);
+    color: #fff;
+  }
   .search-points { display:flex; flex-direction:column; gap:20px; margin-top:32px; }
   .sp-item { display:flex; gap:16px; align-items:flex-start; }
   .sp-icon { width:44px; height:44px; border-radius:12px; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
@@ -297,19 +377,6 @@
   .reveal.visible { opacity:1; transform:translateY(0); }
   .reveal-delay-1{transition-delay:.1s} .reveal-delay-2{transition-delay:.2s} .reveal-delay-3{transition-delay:.3s}
 
-  /* ── RESULT PANEL ── */
-  .result-panel { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:var(--radius); padding:20px; margin-top:16px; display:none; }
-  .result-panel.show { display:block; }
-  .result-panel h4 { font-size:14px; font-weight:700; color:var(--white); margin-bottom:12px; }
-  .result-table { width:100%; border-collapse:collapse; font-size:12px; }
-  .result-table th { background:rgba(255,255,255,.15); color:var(--white); padding:8px 12px; text-align:left; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:1px; }
-  .result-table td { padding:8px 12px; border-bottom:1px solid rgba(255,255,255,.08); color:rgba(255,255,255,.8); }
-  .result-table tr:hover td { background:rgba(255,255,255,.05); }
-  .upload-progress { display:none; margin-top:12px; }
-  .upload-progress.show { display:block; }
-  .progress-bar-wrap { height:6px; background:rgba(255,255,255,.12); border-radius:3px; overflow:hidden; }
-  .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--teal-light),var(--green-light)); border-radius:3px; width:0; transition:width .4s ease; }
-  .progress-label { font-size:12px; color:rgba(255,255,255,.6); margin-top:6px; text-align:right; }
 
   /* ── HAMBURGER MOBILE ── */
   .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;z-index:1001}
@@ -322,10 +389,34 @@
   .nav-mobile a{color:rgba(255,255,255,.85);text-decoration:none;font-size:22px;font-weight:700;font-family:'Playfair Display',serif;transition:var(--transition)}
   .nav-mobile a:hover{color:var(--orange-light)}
   .nav-mobile .nav-cta{color:var(--white)!important;background:var(--orange);padding:14px 36px;border-radius:50px;font-size:18px}
+  .mobile-nav-label {
+    font-weight: 700;
+    color: rgba(255,255,255,.5);
+    padding: 8px 0 4px;
+    font-size: 12px;
+    opacity: 0.7;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .mobile-nav-link {
+    display: block;
+    padding: 8px 12px;
+    color: rgba(255,255,255,.85);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  .mobile-nav-link:hover {
+    color: var(--orange-light);
+    border-left-color: var(--orange-light);
+  }
 
   /* ── RESPONSIVE ── */
   @media(max-width:1024px){
-    .search-layout,.upload-layout,.devlog-layout{grid-template-columns:1fr;gap:40px}
+    .search-layout,.devlog-layout{grid-template-columns:1fr;gap:40px}
     .stats-grid{grid-template-columns:1fr 1fr}
   }
   @media(max-width:768px){
@@ -333,9 +424,8 @@
     .nav-hamburger{display:flex}
     .stats-grid{grid-template-columns:1fr 1fr}
     .search-layout{grid-template-columns:1fr}
-    .upload-layout{grid-template-columns:1fr}
     .section-inner{padding:0 4%}
-    .upload-section,.search-section,.stats-section,.devlog-section{padding:64px 0}
+    .search-section,.stats-section,.devlog-section{padding:64px 0}
     .devlog-layout .changelog-card{border-radius:10px}
     .cl-header{padding:16px 18px}
     .cl-items{padding:12px 16px}
@@ -361,10 +451,26 @@
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="#upload">Unggah</a></li>
     <li><a href="#search">Pencarian</a></li>
     <li><a href="#devlog">Changelog</a></li>
-    <li><a href="/casemix">🏥 Casemix</a></li>
+    <li>
+      <div class="nav-dropdown">
+        <a href="/casemix" class="nav-link nav-casemix">
+          🌿 Casemix <span class="dropdown-arrow">▾</span>
+        </a>
+        <div class="nav-dropdown-menu">
+          <a href="/casemix/klaim">📊 Rekapitulasi Klaim</a>
+          <a href="/casemix/regulasi">📋 Regulasi</a>
+          <a href="/casemix/spo">📋 SPO</a>
+          <a href="/casemix/pengorganisasian">📋 Pengorganisasian</a>
+          <a href="/casemix/pelayanan">📋 Pelayanan</a>
+          <a href="/casemix/kebijakan">📋 Kebijakan</a>
+          <a href="/casemix/ur">📑 Utilization Review</a>
+          <a href="/casemix/galeri">🖼 Galeri</a>
+          <a href="/casemix/hotnews">📰 Hot News</a>
+        </div>
+      </div>
+    </li>
   </ul>
   <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -373,12 +479,21 @@
 
 <!-- MOBILE NAV -->
 <div class="nav-mobile" id="mobileNav">
-  <a href="#upload" onclick="toggleMenu()">Unggah Arsip</a>
   <a href="#search" onclick="toggleMenu()">Pencarian</a>
   <a href="#devlog" onclick="toggleMenu()">Changelog</a>
-  <a href="/excel.html" onclick="toggleMenu()">Excel Viewer</a>
-  <a href="/pdf.html" onclick="toggleMenu()">PDF Viewer</a>
-  <a href="/casemix" onclick="toggleMenu()">🏥 Casemix</a>
+  <div class="mobile-nav-section" style="text-align:center">
+    <div class="mobile-nav-label">🌿 Casemix</div>
+    <a href="/casemix" class="mobile-nav-link" onclick="toggleMenu()">Dashboard</a>
+    <a href="/casemix/klaim" class="mobile-nav-link" onclick="toggleMenu()">Rekapitulasi Klaim</a>
+    <a href="/casemix/regulasi" class="mobile-nav-link" onclick="toggleMenu()">Regulasi</a>
+    <a href="/casemix/spo" class="mobile-nav-link" onclick="toggleMenu()">SPO</a>
+    <a href="/casemix/pengorganisasian" class="mobile-nav-link" onclick="toggleMenu()">Pengorganisasian</a>
+    <a href="/casemix/pelayanan" class="mobile-nav-link" onclick="toggleMenu()">Pelayanan</a>
+    <a href="/casemix/kebijakan" class="mobile-nav-link" onclick="toggleMenu()">Kebijakan</a>
+    <a href="/casemix/ur" class="mobile-nav-link" onclick="toggleMenu()">Utilization Review</a>
+    <a href="/casemix/galeri" class="mobile-nav-link" onclick="toggleMenu()">Galeri</a>
+    <a href="/casemix/hotnews" class="mobile-nav-link" onclick="toggleMenu()">Hot News</a>
+  </div>
 </div>
 
 
@@ -459,57 +574,6 @@
 </section>
 
 
-<!-- UPLOAD -->
-<section class="upload-section" id="upload">
-  <div class="section-inner">
-    <div class="upload-layout">
-      <div class="upload-left">
-        <div class="section-label" style="color:var(--orange-light)">Upload & Proses</div>
-        <h2 class="section-title light reveal">Upload Dokumen</h2>
-        <p class="section-desc light reveal reveal-delay-1">Unggah file Excel atau PDF — sistem langsung membaca, mengindeks, dan menyimpan ke database arsip.</p>
-        <div class="upload-zone reveal reveal-delay-2" id="uploadZone"
-             ondragover="event.preventDefault();this.classList.add('drag-over')"
-             ondragleave="this.classList.remove('drag-over')"
-             ondrop="handleDrop(event)"
-             onclick="document.getElementById('fileInput').click()">
-          <div class="upload-icon">📁</div>
-          <h3>Seret File ke Sini</h3>
-          <p>atau klik untuk memilih file dari komputer</p>
-          <div class="upload-types">
-            <button class="upload-type excel" onclick="event.stopPropagation()">📊 Excel (.xlsx)</button>
-            <button class="upload-type pdf" onclick="event.stopPropagation()">📄 PDF (.pdf)</button>
-          </div>
-        </div>
-        <input type="file" id="fileInput" style="display:none" accept=".xlsx,.xls,.pdf" onchange="handleFileSelect(this)">
-        <div class="upload-progress" id="uploadProgress">
-          <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
-          <div class="progress-label" id="progressLabel">Memproses...</div>
-        </div>
-        <div class="result-panel" id="resultPanel">
-          <h4 id="resultTitle">✅ File Berhasil Dibaca</h4>
-          <table class="result-table"><thead><tr id="resultHead"></tr></thead><tbody id="resultBody"></tbody></table>
-        </div>
-      </div>
-      <div class="upload-right">
-        <div class="upload-features">
-          <div class="uf-item reveal">
-            <div class="uf-num">01</div>
-            <div class="uf-content"><h4>Unggah Dokumen</h4><p>Pilih file Excel atau PDF dari arsip Anda. Mendukung rekap data, laporan, surat, hingga rekam medis scan.</p></div>
-          </div>
-          <div class="uf-item reveal reveal-delay-1">
-            <div class="uf-num orange">02</div>
-            <div class="uf-content"><h4>Proses Otomatis</h4><p>Sistem membaca struktur file, mengekstrak teks dan tabel, lalu mengindeks seluruh konten untuk pencarian instan.</p></div>
-          </div>
-          <div class="uf-item reveal reveal-delay-2">
-            <div class="uf-num green">03</div>
-            <div class="uf-content"><h4>Cari & Ekspor</h4><p>Dokumen langsung masuk database. Cari, filter, dan ekspor kembali ke format yang Anda butuhkan.</p></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 
 <!-- SEARCH DEMO -->
 <section class="search-section" id="search">
@@ -526,11 +590,11 @@
           <button onclick="doDbSearch()">Cari</button>
         </div>
         <div class="sdb-filters">
-          <div class="sdb-filter active" onclick="setFilter(this,'Semua')">Semua</div>
-          <div class="sdb-filter" onclick="setFilter(this,'Excel')">📊 Excel</div>
-          <div class="sdb-filter" onclick="setFilter(this,'PDF')">📄 PDF</div>
-          <div class="sdb-filter" onclick="setFilter(this,'2026')">📅 2026</div>
-          <div class="sdb-filter" onclick="setFilter(this,'Administrasi')">🏥 Administrasi</div>
+          <div class="sdb-filter active" onclick="setFilter(this,'semua')">Semua</div>
+          <div class="sdb-filter" onclick="setFilter(this,'excel')">📊 Excel</div>
+          <div class="sdb-filter" onclick="setFilter(this,'pdf')">📄 PDF</div>
+          <div class="sdb-filter" onclick="setFilter(this,'pptx')">📑 PPTX</div>
+          <div class="sdb-filter" onclick="setFilter(this,'gambar')">🖼 Gambar</div>
         </div>
         <div class="sdb-results" id="sdbResults"></div>
       </div>
@@ -554,8 +618,8 @@
 <section class="stats-section">
   <div class="section-inner">
     <div class="stats-grid">
-      <div class="stat-item reveal"><div class="stat-num"><span id="statTotalArsip">0</span><span class="stat-unit">+</span></div><div class="stat-label">Total Dokumen Arsip</div></div>
-      <div class="stat-item reveal reveal-delay-1"><div class="stat-num"><span id="statTotalCasemix">0</span><span class="stat-unit">+</span></div><div class="stat-label">Total Dokumen Casemix</div></div>
+      <div class="stat-item reveal"><div class="stat-num"><span id="statTotalArsip" data-stat="arsip">0</span><span class="stat-unit">+</span></div><div class="stat-label">Total Dokumen Arsip</div></div>
+      <div class="stat-item reveal reveal-delay-1"><div class="stat-num"><span id="statTotalCasemix" data-stat="casemix">0</span><span class="stat-unit">+</span></div><div class="stat-label">Total Dokumen Casemix</div></div>
       <div class="stat-item reveal reveal-delay-2"><div class="stat-num"><span class="count-num" data-target="99">0</span><span class="stat-unit">%</span></div><div class="stat-label">Akurasi Ekstraksi</div></div>
       <div class="stat-item reveal reveal-delay-3"><div class="stat-num"><span class="count-num" data-target="100">0</span><span class="stat-unit">%</span></div><div class="stat-label">Data Lokal & Privat</div></div>
     </div>
@@ -580,6 +644,23 @@
           <a href="changelog.html">Lihat Semua →</a>
         </div>
         <div class="cl-body">
+          <div class="cl-version">
+            <div class="cl-version-head">
+              <span class="cl-v-num">v0.4.0</span>
+              <span class="cl-v-date">15 Juni 2026</span>
+              <span class="cl-v-badge released">✓ Rilis</span>
+            </div>
+            <div class="cl-items">
+              <div class="cl-item">Deploy ke Railway (https://meruno.up.railway.app)</div>
+              <div class="cl-item">Supabase Storage — file persisten, tidak hilang saat redeploy</div>
+              <div class="cl-item">Kompresi otomatis: PDF, gambar (max 1920px), PPTX</div>
+              <div class="cl-item">Sync Hot News dari wavahusada.com (WP REST API)</div>
+              <div class="cl-item">Search terintegrasi dengan data Casemix</div>
+              <div class="cl-item">Stats counter real-time dari API Casemix</div>
+              <div class="cl-item">Mobile responsive semua halaman Casemix</div>
+              <div class="cl-item">Menu "Unggah" dihapus — diganti dropdown navigasi Casemix</div>
+            </div>
+          </div>
           <div class="cl-version">
             <div class="cl-version-head">
               <span class="cl-v-num">v0.2.0</span>
@@ -650,80 +731,132 @@ new IntersectionObserver(e=>{if(e[0].isIntersecting){
   });
 }}).observe(document.querySelector('.stats-grid'));
 
-// SEARCH DATA
-const sampleData=[
-  {type:'excel',icon:'📊',name:'rekap_pasien_juni2026.xlsx',   meta:'Sheet: Pasien | 312 baris',       match:'No. RM, Nama, Diagnosa, Kamar'},
-  {type:'pdf',  icon:'📄',name:'surat_rujukan_RS_042.pdf',     meta:'Halaman 1 | Dokumen rujukan',     match:'Pasien, Poli Tujuan, Tanggal'},
-  {type:'excel',icon:'📊',name:'laporan_administrasi_q2.xlsx', meta:'Sheet: Rekap | 89 baris',         match:'Biaya, Tindakan, Asuransi, BPJS'},
-  {type:'pdf',  icon:'📄',name:'rekam_medis_scan_240610.pdf',  meta:'Halaman 3 | Scan dokumen',        match:'Anamnesis, Diagnosa, Resep'},
-  {type:'excel',icon:'📊',name:'inventaris_obat_2026.xlsx',    meta:'Sheet: Stok | 540 baris',         match:'Nama Obat, Stok, Expired, Harga'},
+// ── SEARCH — DATA REAL CASEMIX ──
+let allCasemixDocs = [];
+let activeFilter = 'semua';
+
+const CASEMIX_SECTIONS = [
+  { key: 'regulasi',         label: 'Regulasi' },
+  { key: 'spo',              label: 'SPO' },
+  { key: 'pengorganisasian', label: 'Pengorganisasian' },
+  { key: 'pelayanan',        label: 'Pelayanan' },
+  { key: 'kebijakan',        label: 'Kebijakan' },
+  { key: 'ur',               label: 'Utilization Review' },
+  { key: 'galeri',           label: 'Galeri' },
+  { key: 'klaim',            label: 'Rekapitulasi Klaim' },
 ];
 
-function renderResults(data){
-  document.getElementById('sdbResults').innerHTML=data.length?data.map(d=>`
-    <div class="sdb-result-item">
-      <div class="sri-icon ${d.type}">${d.icon}</div>
-      <div class="sri-info">
-        <div class="sri-name">${d.name}</div>
-        <div class="sri-meta">${d.meta} · <span class="highlight">${d.match}</span></div>
-      </div>
-      <span class="sri-badge">Ditemukan</span>
-    </div>`).join('')
-    :`<div class="sdb-result-item"><div class="sri-icon pdf">🔍</div><div class="sri-info"><div class="sri-name">Tidak ada hasil</div><div class="sri-meta">Coba kata kunci lain</div></div></div>`;
-}
-renderResults(sampleData);
+// Juga dipakai loadStats — ambil key saja
+const CASEMIX_SECTION_KEYS = CASEMIX_SECTIONS.map(s => s.key);
 
-function doDbSearch(){
-  const q=document.getElementById('dbSearch').value.toLowerCase().trim();
-  renderResults(q?sampleData.filter(d=>d.name.toLowerCase().includes(q)||d.match.toLowerCase().includes(q)||d.meta.toLowerCase().includes(q)):sampleData);
-}
-document.getElementById('dbSearch').addEventListener('input',doDbSearch);
-document.getElementById('dbSearch').addEventListener('keydown',e=>{if(e.key==='Enter')doDbSearch()});
+// Cache untuk stats (tetap dipakai loadStats)
+let casemixCache = {};
 
-function setFilter(el,f){
-  document.querySelectorAll('.sdb-filter').forEach(x=>x.classList.remove('active'));
-  el.classList.add('active');
-  renderResults(f==='Semua'?sampleData:f==='Excel'?sampleData.filter(d=>d.type==='excel'):f==='PDF'?sampleData.filter(d=>d.type==='pdf'):f==='2026'?sampleData.filter(d=>d.name.includes('2026')):sampleData.filter(d=>d.name.toLowerCase().includes('administrasi')||d.match.toLowerCase().includes('bpjs')));
-}
-
-// UPLOAD — kirim ke Flask backend
-function handleFileSelect(i){if(i.files&&i.files[0])processFile(i.files[0]);}
-function handleDrop(e){e.preventDefault();document.getElementById('uploadZone').classList.remove('drag-over');if(e.dataTransfer.files[0])processFile(e.dataTransfer.files[0]);}
-
-async function processFile(file){
-  const pr=document.getElementById('uploadProgress'),fill=document.getElementById('progressFill'),
-        lbl=document.getElementById('progressLabel'),panel=document.getElementById('resultPanel');
-  pr.classList.add('show'); panel.classList.remove('show');
-  fill.style.width='0%'; fill.style.background='linear-gradient(90deg,var(--teal),var(--green-light))';
-
-  // Animasi progress saat upload
-  let pct=0;
-  lbl.textContent='Mengunggah file ke server...';
-  const iv=setInterval(()=>{if(pct<80){pct+=Math.random()*6+2;fill.style.width=Math.min(pct,80)+'%';}},150);
-
-  try {
-    const fd=new FormData(); fd.append('file',file);
-    const res=await fetch('/api/upload',{method:'POST',body:fd});
-    clearInterval(iv); fill.style.width='100%';
-
-    if(res.redirected){
-      lbl.textContent='✅ Berhasil diproses! Mengarahkan...';
-      sampleData.unshift({type:file.name.match(/\.xlsx?$/i)?'excel':'pdf',
-        icon:file.name.match(/\.xlsx?$/i)?'📊':'📄',name:file.name,
-        meta:`Baru · ${(file.size/1024).toFixed(0)} KB`,match:'Arsip RS'});
-      renderResults(sampleData.slice(0,5));
-      setTimeout(()=>window.location.href=res.url,700);
-    } else {
-      const err=await res.json().catch(()=>({error:'Upload gagal'}));
-      lbl.textContent='❌ '+(err.error||'Upload gagal');
-      fill.style.background='#e53e3e';
-    }
-  } catch(e){
-    clearInterval(iv); fill.style.width='100%';
-    fill.style.background='var(--orange)';
-    lbl.textContent='⚠ Server belum aktif — jalankan jalankan-server.bat terlebih dahulu';
+async function loadAllCasemixDocs() {
+  allCasemixDocs = [];
+  for (const sec of CASEMIX_SECTIONS) {
+    try {
+      const res = await fetch(`/casemix/api/files/${sec.key}`);
+      if (!res.ok) continue;
+      const data = await res.json();
+      casemixCache[sec.key] = data.files || [];
+      (data.files || []).forEach(f => {
+        const fname = f.filename || f.title || f.id || '';
+        allCasemixDocs.push({
+          id: f.id || fname,
+          filename: fname,
+          title: f.title || fname,
+          section: sec.key,
+          sectionLabel: sec.label,
+          url: `/casemix/${sec.key}`,
+          ext: fname.includes('.') ? fname.split('.').pop().toLowerCase() : '',
+        });
+      });
+    } catch {}
   }
+  // Tampilkan semua saat pertama load
+  renderSearchResults(allCasemixDocs);
 }
+
+function getFileIcon(ext) {
+  if (['xlsx','xls'].includes(ext)) return '📊';
+  if (ext === 'pdf') return '📄';
+  if (['pptx','ppt'].includes(ext)) return '📑';
+  if (['jpg','jpeg','png','gif','webp'].includes(ext)) return '🖼';
+  return '📋';
+}
+
+function getFileTypeBadge(ext) {
+  if (['xlsx','xls'].includes(ext)) return '<span class="file-badge badge-excel">Excel</span>';
+  if (ext === 'pdf') return '<span class="file-badge badge-pdf">PDF</span>';
+  if (['pptx','ppt'].includes(ext)) return '<span class="file-badge badge-pptx">PPTX</span>';
+  if (['jpg','jpeg','png','gif','webp'].includes(ext)) return '<span class="file-badge badge-img">Gambar</span>';
+  return '<span class="file-badge">Dokumen</span>';
+}
+
+function renderSearchResults(docs) {
+  const container = document.getElementById('sdbResults');
+  if (!container) return;
+  if (docs.length === 0) {
+    container.innerHTML = '<div class="search-empty">Tidak ada dokumen ditemukan.</div>';
+    return;
+  }
+  container.innerHTML = docs.map(doc => `
+    <div class="sdb-result-item casemix-result" onclick="window.location='${doc.url}'" style="cursor:pointer">
+      <div class="sri-icon" style="background:rgba(13,110,122,.25);font-size:18px">${getFileIcon(doc.ext)}</div>
+      <div class="sri-body">
+        <div class="sri-name si-name">${doc.title || doc.filename}</div>
+        <div class="sri-meta si-meta">
+          ${getFileTypeBadge(doc.ext)}
+          <span class="si-section">${doc.sectionLabel}</span>
+        </div>
+      </div>
+      <span class="sri-badge">Casemix</span>
+    </div>`).join('');
+}
+
+function filterSearch() {
+  const q = (document.getElementById('dbSearch').value || '').toLowerCase().trim();
+  let results = allCasemixDocs;
+
+  // Filter by type
+  if (activeFilter && activeFilter !== 'semua') {
+    results = results.filter(d => {
+      if (activeFilter === 'excel') return ['xlsx','xls'].includes(d.ext);
+      if (activeFilter === 'pdf') return d.ext === 'pdf';
+      if (activeFilter === 'pptx') return ['pptx','ppt'].includes(d.ext);
+      if (activeFilter === 'gambar') return ['jpg','jpeg','png','gif','webp'].includes(d.ext);
+      return true;
+    });
+  }
+
+  // Filter by query
+  if (q.length > 1) {
+    results = results.filter(d =>
+      (d.title || '').toLowerCase().includes(q) ||
+      (d.filename || '').toLowerCase().includes(q) ||
+      (d.sectionLabel || '').toLowerCase().includes(q)
+    );
+  }
+
+  renderSearchResults(results);
+}
+
+function doDbSearch() { filterSearch(); }
+
+function setFilter(el, f) {
+  document.querySelectorAll('.sdb-filter').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  activeFilter = f;
+  filterSearch();
+}
+
+document.getElementById('dbSearch').addEventListener('input', doDbSearch);
+document.getElementById('dbSearch').addEventListener('keydown', e => { if (e.key === 'Enter') doDbSearch(); });
+
+// Load dokumen saat halaman siap
+loadAllCasemixDocs();
+
 
 // Hot News Preview
 async function loadHotNewsPreview() {
@@ -758,59 +891,62 @@ async function loadHotNewsPreview() {
 }
 loadHotNewsPreview();
 
-// ── SINKRONISASI DATA ARSIP ──
-(async function syncArchive(){
+// ── ANIMASI COUNTER ──
+function animateCounter(el, target) {
+  let c = 0;
+  const iv = setInterval(() => {
+    c = Math.min(c + Math.ceil(target / 50 || 1), target);
+    el.textContent = c;
+    if (c >= target) clearInterval(iv);
+  }, 22);
+}
+
+// ── LOAD STATS (arsip + casemix) ──
+async function loadStats() {
+  // Total Dokumen Arsip
   try {
     const res = await fetch('/api/archive');
-    if (!res.ok) return;
-    const data = await res.json();
-    if (!Array.isArray(data)) return;
-    const total = data.length;
-    // Stats section — Total Dokumen Arsip
-    const elStatArsip = document.getElementById('statTotalArsip');
-    if (elStatArsip) {
-      let c=0; const iv=setInterval(()=>{c=Math.min(c+Math.ceil(total/50||1),total);elStatArsip.textContent=c;if(c>=total)clearInterval(iv);},22);
+    if (res.ok) {
+      const data = await res.json();
+      const el = document.querySelector('[data-stat="arsip"]');
+      if (el) animateCounter(el, Array.isArray(data) ? data.length : 0);
     }
-  } catch(e) { /* server belum aktif, biarkan default */ }
-})();
+  } catch {}
 
-// ── SINKRONISASI DATA CASEMIX ──
-(async function syncCasemix(){
-  const sections = ['regulasi','spo','pengorganisasian','pelayanan','kebijakan','ur','galeri','klaim'];
-  let totalFiles = 0;
-  let newsCount = 0;
-
+  // Total Dokumen Casemix — sum semua section
   try {
-    const results = await Promise.allSettled([
-      ...sections.map(s => fetch(`/casemix/api/files/${s}`).then(r=>r.json())),
-      fetch('/casemix/api/news').then(r=>r.json())
-    ]);
-
-    results.slice(0, sections.length).forEach(r => {
-      if (r.status === 'fulfilled' && r.value && typeof r.value.count === 'number') {
-        totalFiles += r.value.count;
+    const results = await Promise.allSettled(
+      CASEMIX_SECTION_KEYS.map(s => fetch(`/casemix/api/files/${s}`).then(r => r.json()))
+    );
+    let total = 0;
+    results.forEach((r, i) => {
+      if (r.status === 'fulfilled' && r.value) {
+        total += r.value.count || 0;
+        // Perbarui cache search casemix sekaligus
+        if (Array.isArray(r.value.files)) {
+          casemixCache[CASEMIX_SECTION_KEYS[i]] = r.value.files;
+        }
       }
     });
+    const el = document.querySelector('[data-stat="casemix"]');
+    if (el) animateCounter(el, total);
 
-    const newsResult = results[sections.length];
-    if (newsResult.status === 'fulfilled' && newsResult.value && typeof newsResult.value.count === 'number') {
-      newsCount = newsResult.value.count;
-    }
-
-    // Update Casemix stats in the Casemix section card
+    // Update Casemix section card stats
     const elCmxFiles = document.getElementById('cmxTotalFiles');
-    if (elCmxFiles) elCmxFiles.textContent = totalFiles;
-    const elCmxNews = document.getElementById('cmxNews');
-    if (elCmxNews) elCmxNews.textContent = newsCount;
+    if (elCmxFiles) elCmxFiles.textContent = total;
+  } catch {}
 
-    // Update Stats section — Total Dokumen Casemix
-    const elStatCasemix = document.getElementById('statTotalCasemix');
-    if (elStatCasemix) {
-      let c=0; const iv=setInterval(()=>{c=Math.min(c+Math.ceil(totalFiles/50||1),totalFiles);elStatCasemix.textContent=c;if(c>=totalFiles)clearInterval(iv);},22);
+  // Hot News count — untuk card casemix section
+  try {
+    const res = await fetch('/casemix/api/news');
+    if (res.ok) {
+      const data = await res.json();
+      const elCmxNews = document.getElementById('cmxNews');
+      if (elCmxNews) elCmxNews.textContent = data.count || 0;
     }
-  } catch(e) { /* server belum aktif */ }
-})();
+  } catch {}
+}
+loadStats();
 </script>
 </body>
 </html>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
