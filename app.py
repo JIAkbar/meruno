@@ -545,6 +545,61 @@ def casemix_news():
                 pass
     return jsonify({"news": [], "count": 0})
 
+@app.route("/casemix/api/sync-news", methods=["POST"])
+def casemix_sync_news():
+    """Sync berita terbaru dari wavahusada.com via WordPress REST API."""
+    import urllib.request, html, re as _re
+    WP_API = "https://wavahusada.com/wp-json/wp/v2/posts?categories=110&per_page=5&_embed&_fields=id,title,date,excerpt,link,_embedded"
+    try:
+        req = urllib.request.Request(WP_API, headers={"User-Agent": "DairyMeruno/1.0"})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            posts = json.loads(resp.read().decode())
+    except Exception as e:
+        return jsonify({"error": f"Gagal mengambil data: {e}"}), 502
+
+    news_file = CASEMIX_DATA_DIR / "news.json"
+    existing = json.loads(news_file.read_text(encoding="utf-8")) if news_file.exists() else {"news": [], "count": 0}
+    existing_ids = {n["id"] for n in existing["news"]}
+
+    def strip_html(s):
+        return _re.sub(r"<[^>]+>", "", html.unescape(s or "")).strip()
+
+    def fmt_date(iso):
+        try:
+            dt = datetime.datetime.fromisoformat(iso)
+            MONTHS = ["","Januari","Februari","Maret","April","Mei","Juni",
+                      "Juli","Agustus","September","Oktober","November","Desember"]
+            return f"{dt.day} {MONTHS[dt.month]} {dt.year}"
+        except:
+            return iso
+
+    added = 0
+    for p in posts:
+        wp_id = f"wp_{p['id']}"
+        if wp_id in existing_ids:
+            continue
+        img_url = None
+        try:
+            img_url = p["_embedded"]["wp:featuredmedia"][0]["source_url"]
+        except (KeyError, IndexError, TypeError):
+            pass
+        entry = {
+            "id": wp_id,
+            "title": html.unescape(p["title"]["rendered"]),
+            "content": strip_html(p["excerpt"]["rendered"]),
+            "source_url": p["link"],
+            "published_at": p["date"],
+            "published_at_display": fmt_date(p["date"]),
+            "img_url": img_url,
+        }
+        existing["news"].insert(0, entry)
+        existing_ids.add(wp_id)
+        added += 1
+
+    existing["count"] = len(existing["news"])
+    news_file.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+    return jsonify({"added": added, "total": existing["count"]})
+
 @app.route("/casemix/api/section-info")
 def casemix_section_info():
     section = request.args.get("section", "")
@@ -813,4 +868,6 @@ if __name__ == "__main__":
         webbrowser.open("http://localhost:8080")
     threading.Thread(target=open_browser, daemon=True).start()
 
-    app.run(host="127.0.0.1", port=8080, debug=False)
+    port = int(os.environ.get("PORT", 8080))
+    host = "0.0.0.0" if os.environ.get("PORT") else "127.0.0.1"
+    app.run(host=host, port=port, debug=False)
