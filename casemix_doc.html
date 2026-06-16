@@ -311,6 +311,56 @@ a{text-decoration:none;color:inherit}
 .fitem{opacity:0;transform:translateY(8px)}
 .fitem.revealed{opacity:1;transform:none;transition:opacity .35s ease,transform .35s ease}
 
+/* ── Back Button ── */
+.back-btn-casemix {
+  display: inline-block;
+  color: var(--teal-dark, #094e58);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.back-btn-casemix:hover { opacity: 1; }
+
+/* Mobile upload toggle */
+.mobile-upload-toggle {
+  display: none;
+}
+@media (max-width: 768px) {
+  .mobile-upload-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #094e58;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 8px;
+  }
+  .mobile-upload-toggle .toggle-arrow {
+    transition: transform 0.25s;
+    font-style: normal;
+  }
+  .mobile-upload-toggle.collapsed .toggle-arrow {
+    transform: rotate(-90deg);
+  }
+  .upload-collapsible {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    max-height: 2000px;
+  }
+  .upload-collapsible.collapsed {
+    max-height: 0;
+  }
+}
+
 /* ── Responsive ── */
 @media(max-width:768px){
   .two-col{grid-template-columns:1fr}
@@ -349,9 +399,16 @@ a{text-decoration:none;color:inherit}
 
 <!-- Page Body -->
 <div class="page-body">
+  <a href="/casemix" class="back-btn-casemix">← Dashboard Casemix</a>
   <div class="two-col">
 
     <!-- LEFT: Upload Card -->
+    <div class="col-left">
+    <button class="mobile-upload-toggle" onclick="toggleUpload(this)" id="uploadToggle">
+      <span>⬆️ Form Upload</span>
+      <i class="toggle-arrow">▼</i>
+    </button>
+    <div class="upload-collapsible" id="uploadCollapsible">
     <div class="card" id="upload-card">
       <div class="card-header">
         <div class="card-header-title">
@@ -396,6 +453,8 @@ a{text-decoration:none;color:inherit}
         <div class="upload-msg" id="upload-msg"></div>
       </div>
     </div>
+    </div><!-- /.upload-collapsible -->
+    </div><!-- /.col-left -->
 
     <!-- RIGHT: File List Card -->
     <div class="card" id="file-list-card">
@@ -777,6 +836,12 @@ document.getElementById('btn-confirm-delete').addEventListener('click', async ()
 document.getElementById('modal-overlay').addEventListener('click', e => {
   if(e.target === e.currentTarget) closeDel();
 });
+
+// ── Mobile Upload Toggle ──────────────────────────────────────────────────────
+function toggleUpload(btn) {
+  btn.classList.toggle('collapsed');
+  document.getElementById('uploadCollapsible').classList.toggle('collapsed');
+}
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 loadDocs();

@@ -259,6 +259,56 @@ tbody td{padding:8px 11px;color:var(--dark);border-bottom:1px solid var(--cream-
 .btn-confirm-delete{padding:9px 20px;border-radius:50px;background:var(--red);color:white;border:none;font-family:'Nunito Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
 .btn-confirm-delete:hover{background:#a93226}
 
+/* ── Back button ── */
+.back-btn-casemix {
+  display: inline-block;
+  color: var(--teal-dark, #094e58);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.back-btn-casemix:hover { opacity: 1; }
+
+/* ── Mobile upload toggle ── */
+.mobile-upload-toggle {
+  display: none;
+}
+@media (max-width: 768px) {
+  .mobile-upload-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #094e58;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 8px;
+  }
+  .mobile-upload-toggle .toggle-arrow {
+    transition: transform 0.25s;
+    font-style: normal;
+  }
+  .mobile-upload-toggle.collapsed .toggle-arrow {
+    transform: rotate(-90deg);
+  }
+  .upload-collapsible {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    max-height: 2000px;
+  }
+  .upload-collapsible.collapsed {
+    max-height: 0;
+  }
+}
+
 /* ── Responsive ── */
 @media(max-width:768px){
   .page-body{padding:14px 14px 60px}
@@ -291,41 +341,48 @@ tbody td{padding:8px 11px;color:var(--dark);border-bottom:1px solid var(--cream-
 </nav>
 
 <div class="page-body">
+  <a href="/casemix" class="back-btn-casemix">← Dashboard Casemix</a>
   <div class="two-col">
 
     <!-- ── LEFT: Upload Card ── -->
     <div class="col-card">
-      <div class="col-card-head">⬆️ Upload Data Klaim</div>
-      <div class="col-card-body">
-        <form id="upload-form" enctype="multipart/form-data">
-          <div class="drop-zone" id="drop-zone">
-            <input type="file" id="file-input" name="file" accept=".xlsx">
-            <span class="drop-icon">📊</span>
-            <div class="drop-text">Drag &amp; drop file <strong>.xlsx</strong> ke sini atau <strong>klik untuk browse</strong></div>
-            <div class="drop-hint">File Excel (.xlsx) — data klaim BPJS</div>
-          </div>
-          <div class="file-preview" id="file-preview">
-            <span style="font-size:20px">📗</span>
-            <div>
-              <div class="fp-name" id="fp-name"></div>
-              <div class="fp-size" id="fp-size"></div>
+      <button class="mobile-upload-toggle" onclick="toggleUpload(this)" id="uploadToggle">
+        <span>⬆️ Upload Data Klaim</span>
+        <i class="toggle-arrow">▼</i>
+      </button>
+      <div class="upload-collapsible" id="uploadCollapsible">
+        <div class="col-card-head">⬆️ Upload Data Klaim</div>
+        <div class="col-card-body">
+          <form id="upload-form" enctype="multipart/form-data">
+            <div class="drop-zone" id="drop-zone">
+              <input type="file" id="file-input" name="file" accept=".xlsx">
+              <span class="drop-icon">📊</span>
+              <div class="drop-text">Drag &amp; drop file <strong>.xlsx</strong> ke sini atau <strong>klik untuk browse</strong></div>
+              <div class="drop-hint">File Excel (.xlsx) — data klaim BPJS</div>
             </div>
-            <span class="fp-remove" id="fp-remove">✕</span>
-          </div>
+            <div class="file-preview" id="file-preview">
+              <span style="font-size:20px">📗</span>
+              <div>
+                <div class="fp-name" id="fp-name"></div>
+                <div class="fp-size" id="fp-size"></div>
+              </div>
+              <span class="fp-remove" id="fp-remove">✕</span>
+            </div>
 
-          <div class="form-group">
-            <label for="title-input">Judul / Keterangan <span style="color:var(--gray);font-weight:400">(opsional)</span></label>
-            <input type="text" id="title-input" name="title" placeholder="Contoh: Rekapitulasi Klaim April 2026">
+            <div class="form-group">
+              <label for="title-input">Judul / Keterangan <span style="color:var(--gray);font-weight:400">(opsional)</span></label>
+              <input type="text" id="title-input" name="title" placeholder="Contoh: Rekapitulasi Klaim April 2026">
+            </div>
+            <button type="submit" class="upload-btn" id="upload-btn" disabled>
+              ⚡ Proses Data Klaim
+            </button>
+          </form>
+          <div class="progress-bar-wrap" id="progress-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
+          <div class="upload-msg" id="upload-msg"></div>
+          <div class="xls-note">
+            <strong>Format .xls (Excel lama) tidak didukung.</strong><br>
+            Buka file di Excel → Simpan Sebagai → pilih format <em>.xlsx</em> terlebih dahulu.
           </div>
-          <button type="submit" class="upload-btn" id="upload-btn" disabled>
-            ⚡ Proses Data Klaim
-          </button>
-        </form>
-        <div class="progress-bar-wrap" id="progress-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
-        <div class="upload-msg" id="upload-msg"></div>
-        <div class="xls-note">
-          <strong>Format .xls (Excel lama) tidak didukung.</strong><br>
-          Buka file di Excel → Simpan Sebagai → pilih format <em>.xlsx</em> terlebih dahulu.
         </div>
       </div>
     </div>
@@ -598,6 +655,12 @@ document.getElementById('modal-overlay').addEventListener('click', e=>{
 
 // ── Init ───────────────────────────────────────────────────────────────────────
 loadKlaim();
+
+// ── Mobile upload toggle ───────────────────────────────────────────────────────
+function toggleUpload(btn) {
+  btn.classList.toggle('collapsed');
+  document.getElementById('uploadCollapsible').classList.toggle('collapsed');
+}
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
