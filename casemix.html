@@ -147,7 +147,7 @@ body { font-family: 'Nunito Sans', sans-serif; background: var(--cream); color: 
 }
 .stats-bar-inner {
   max-width: 1200px; margin: 0 auto; padding: 0 5%;
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(5, 1fr);
 }
 .stat-cell {
   padding: 20px 24px;
@@ -352,9 +352,9 @@ body { font-family: 'Nunito Sans', sans-serif; background: var(--cream); color: 
   .page-header { padding: 28px 4% 36px; }
   .page-header-right { display: none; }
   .page-subtitle { font-size: 13px; }
-  .stats-bar-inner { grid-template-columns: repeat(2, 1fr); }
-  .stat-cell:nth-child(2) { border-right: none; }
-  .stat-cell:nth-child(4) { border-right: none; }
+  .stats-bar-inner { grid-template-columns: repeat(3, 1fr); }
+  .stat-cell:nth-child(3) { border-right: none; }
+  .stat-cell:nth-child(5) { border-right: none; }
   .stat-cell { padding: 14px 16px; }
   .stat-cell-num { font-size: 18px; }
   .cards-grid-5, .cards-grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -457,6 +457,13 @@ body { font-family: 'Nunito Sans', sans-serif; background: var(--cream); color: 
       <div>
         <div class="stat-cell-num" id="statNews">0</div>
         <div class="stat-cell-lbl">Hot News</div>
+      </div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-cell-icon teal">💾</div>
+      <div>
+        <div class="stat-cell-num" id="statStorage" style="font-size:18px">—</div>
+        <div class="stat-cell-lbl">Storage Terpakai</div>
       </div>
     </div>
   </div>
@@ -655,21 +662,30 @@ function showToast(msg, type = 'info') {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+function fmtSize(bytes) {
+  if (!bytes || bytes === 0) return '';
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
 // LOAD STATS dari backend Flask
 async function loadStats() {
   try {
-    // Nanti akan diisi dari /casemix/api/stats
-    // Untuk sekarang tampil 0 / placeholder
     const sections = ['regulasi','spo','pengorganisasian','pelayanan','kebijakan','ur','galeri'];
     let totalDok = 0;
+    let totalSizeBytes = 0;
     // Fetch masing-masing section count
     for (const sec of sections) {
       try {
         const res = await fetch(`/casemix/api/files/${sec}`);
         if (res.ok) {
           const data = await res.json();
-          const count = data.files ? data.files.length : 0;
+          const files = data.files || [];
+          const count = files.length;
+          const sizeBytes = files.reduce((s, f) => s + (f.size || 0), 0);
           totalDok += count;
+          totalSizeBytes += sizeBytes;
           // Update count per section
           const map = {
             regulasi: 'countReg', spo: 'countSPO',
@@ -683,7 +699,8 @@ async function loadStats() {
           };
           if (map[sec]) {
             const label = sec === 'galeri' ? 'foto' : sec === 'ur' ? 'laporan' : 'dokumen';
-            document.getElementById(map[sec]).textContent = `${count} ${label}`;
+            const sizeStr = fmtSize(sizeBytes);
+            document.getElementById(map[sec]).textContent = `${count} ${label}${sizeStr ? ' · ' + sizeStr : ''}`;
             if (count > 0 && dotMap[sec]) {
               document.getElementById(dotMap[sec]).classList.add('active');
             }
@@ -692,6 +709,7 @@ async function loadStats() {
       } catch(_) {}
     }
     document.getElementById('statDokumen').textContent = totalDok;
+    document.getElementById('statStorage').textContent = fmtSize(totalSizeBytes) || '—';
 
     // Set statFoto from galeri count already fetched in loop above
     const galCountEl = document.getElementById('countGal');
