@@ -133,7 +133,7 @@
     white-space: nowrap;
   }
   .casemix-result { cursor: pointer; }
-  .sri-body { flex: 1; }
+  .sri-body { flex: 1; min-width: 0; overflow: hidden; }
 
   /* ── FILE BADGE (search results) ── */
   .file-badge {
@@ -194,7 +194,7 @@
   .sri-info { flex:1; }
 
   /* nama dokumen — eksplisit di semua state */
-  .sri-name { font-size:13px; font-weight:700; color:rgba(255,255,255,.85); }
+  .sri-name { font-size:13px; font-weight:700; color:rgba(255,255,255,.85); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .sdb-result-item:hover .sri-name { color: var(--white); }
 
   /* meta/subtitle — eksplisit di semua state */
