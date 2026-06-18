@@ -470,13 +470,7 @@ function fmtCell(raw, isNumCol){
   if(isNaN(n) || raw==='' || raw===null) return escHtml(raw);
   return n >= 1000000 ? fmtRupiah(n) : numFmt(n);
 }
-function fmtRupiah(n){ return 'Rp ' + Math.round(n).toLocaleString('id-ID') }
-function fmtCell(raw, isNumCol){
-  if(!isNumCol) return escHtml(raw);
-  const n = parseFloat(String(raw).replace(/[^0-9.-]/g,''));
-  if(isNaN(n) || raw==='' || raw===null) return escHtml(raw);
-  return n >= 1000000 ? fmtRupiah(n) : numFmt(n);
-}
+
 function fmtSize(b){ if(!b||b===0) return '—'; if(b<1048576) return (b/1024).toFixed(0)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
 
 // ── Upload drawer ──────────────────────────────────────────────────────────────
@@ -749,3 +743,15 @@ loadKlaim();
 function downloadCurrentFile(){
   const k = allKlaim.find(x => x.id === activeFileId);
   if(!k || !k.sheets || k.sheets.length === 0)
+  return;
+  const wb = XLSX.utils.book_new();
+  k.sheets.forEach(s => {
+    const wsData = [s.headers, ...s.rows];
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    XLSX.utils.book_append_sheet(wb, ws, s.name.substring(0, 31));
+  });
+  XLSX.writeFile(wb, (k.title || k.id) + '.xlsx');
+}
+</script>
+</body>
+</html>

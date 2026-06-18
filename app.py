@@ -134,7 +134,7 @@ def save_meta(section, meta_dict):
     except Exception:
         pass
     try:
-        sb.storage.from_("casemix").upload(path, io.BytesIO(content), {"content-type": "application/json"})
+        sb.storage.from_("casemix").upload(path, content, {"content-type": "application/json"})
     except Exception as e:
         print(f"[save_meta] {section}: {e}")
 
