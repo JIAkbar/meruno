@@ -575,7 +575,7 @@ a{text-decoration:none;color:inherit}
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <h3>🗑️ Hapus Dokumen?</h3>
-    <p id="modal-desc">Dokumen ini akan dihapus secara permanen dan tidak dapat dikembalikan.</p>
+    <p id="modal-desc">Dokumen "<span id="del-filename"></span>" akan dihapus secara permanen dan tidak dapat dikembalikan.</p>
     <div class="modal-actions">
       <button class="btn-cancel" id="btn-cancel">Batal</button>
       <button class="btn-confirm-delete" id="btn-confirm-delete">Hapus</button>
@@ -955,7 +955,7 @@ function confirmDel(){
           document.getElementById('doc-detail').style.display = 'none';
           document.getElementById('doc-empty-state').style.display = 'flex';
         }
-        renderDocs(); updateStats();
+        renderDocs(allDocs);
       } else {
         res.json().catch(()=>({})).then(data =>
           showMsg(`❌ Gagal menghapus: ${data.error||res.statusText}`, 'error'));
@@ -969,6 +969,4 @@ document.getElementById('modal-overlay').addEventListener('click', e => {
   if(e.target === e.currentTarget) closeDel();
 });
 loadDocs();
-</script>
-</body>
-</html>
+</sc
