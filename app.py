@@ -143,13 +143,17 @@ def _rebuild_meta_from_storage(section):
                 entries.append({
                     "id": fname, "original_name": orig,
                     "caption": orig, "file": fname,
+                    "img_url": url,
                     "uploaded_at": uploaded_at, "size": size, "url": url
                 })
             else:
                 entries.append({
                     "id": fname, "original_name": orig,
                     "title": orig, "desc": "",
-                    "uploaded_at": uploaded_at, "size": size, "url": url
+                    "file_url": url,
+                    "uploaded_at": uploaded_at,
+                    "uploaded_at_display": uploaded_at[:10],
+                    "size": size, "url": url
                 })
         if not entries:
             return None
